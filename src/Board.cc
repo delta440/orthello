@@ -12,49 +12,69 @@ Board::Board(): board_ (8, vector<char>(8, 'e')){
 
 char Board::operator()(int x, int y)const {return board_[x][y];}
 
-vector<vector<char> > Board::getMoves(char player){
-
-
-
+vector<int> Board::getMoves(char player){
+  char nplayer;
+  vector<int> Moves;
+  (player == 'w') ? (nplayer = 'b') : (nplayer = 'w');
+  for(int y = 0; y < 8; ++y){
+    for(int x = 0; x < 8; ++x){
+      if(CheckDirectionb(x, y, x + 1, y, player, nplayer, "r")
+	 || CheckDirectionb(x, y, x + 1, y - 1, player, nplayer, "ur")
+	 || CheckDirectionb(x, y, x, y - 1, player, nplayer, "u")
+	 || CheckDirectionb(x, y, x - 1, y - 1, player, nplayer, "ul")
+	 || CheckDirectionb(x, y, x - 1, y, player, nplayer, "l")
+	 || CheckDirectionb(x, y, x - 1, y + 1, player, nplayer, "dl")
+	 || CheckDirectionb(x, y, x, y + 1, player, nplayer, "d")
+	 || CheckDirectionb(x, y, x + 1, y + 1, player, nplayer, "dr")){
+	Moves.push_back(x);
+	Moves.push_back(y);
+      }
+    }
+  }
+  return Moves;
 }
 
 void Board::CheckDirection(int x, int y, int xt, int yt, char player, char nplayer, string di){
-  while(board_[xt][yt] == nplayer && xt < 8 && xt >= 0 && yt < 8 && yt >= 0){
-    if(board_[xt][yt] == player){
-      flip(x, y, xt, yt);
-      break;
-    }
+  while(xt < 8 && xt >= 0 && yt < 8 && yt >= 0 && board_[xt][yt] == nplayer){
     if(di=="r"||di=="ur"||di=="dr"){++xt;}
     if(di=="l"||di=="ul"||di=="dl"){--xt;}
-    if(di=="u"||di=="ur"||di=="ul"){++yt;}
-    if(di=="d"||di=="ud"||di=="ud"){++yt;}
+    if(di=="u"||di=="ur"||di=="ul"){--yt;}
+    if(di=="d"||di=="dr"||di=="dl"){++yt;}
+    if(xt < 8 && xt >= 0 && yt < 8 && yt >= 0 && board_[xt][yt] == player){
+      flip(x, y, xt, yt, player);
+      break;
+    } 
   }
 }
-    
-    
-void Board::Move(int x, int y, char player){
-  int xt = x + 1;
-  int yt = y;
-  char nplayer;
-  (player == 'w') ? (nplayer = 'b') : (nplayer = 'w');
-  CheckDirection(x, y, xt, yt, player, nplayer, "r");
-  ++yt;
-  CheckDirection(x, y, xt, yt, player, nplayer, "ur");
-  xt = x;
-  CheckDirection(x, y, xt, yt, player, nplayer, "u");
-  --xt;
-  CheckDirection(x, y, xt, yt, player, nplayer, "ul");
-  yt = y;
-  CheckDirection(x, y, xt, yt, player, nplayer, "l");
-  --yt;
-  CheckDirection(x, y, xt, yt, player, nplayer, "dl");
-  xt = x;
-  CheckDirection(x, y, xt, yt, player, nplayer, "d");
-  ++xt;
-  CheckDirection(x, y, xt, yt, player, nplayer, "dr");
+
+bool Board::CheckDirectionb(int x, int y, int xt, int yt, char player, char nplayer, string di){
+  while(xt < 8 && xt >= 0 && yt < 8 && yt >= 0 && board_[xt][yt] == nplayer){
+    if(di=="r"||di=="ur"||di=="dr"){++xt;}
+    if(di=="l"||di=="ul"||di=="dl"){--xt;}
+    if(di=="u"||di=="ur"||di=="ul"){--yt;}
+    if(di=="d"||di=="dr"||di=="dl"){++yt;}
+    if(xt < 8 && xt >= 0 && yt < 8 && yt >= 0 && board_[xt][yt] == player){
+      return 1;
+    } 
+  }
+  return 0;
 }
     
-void Board::flip(int x1, int y1, int x2, int y2){
+void Board::Move(int x, int y, char player){
+  char nplayer;
+  board_[x][y] = player;
+  (player == 'w') ? (nplayer = 'b') : (nplayer = 'w');
+  CheckDirection(x, y, x + 1, y, player, nplayer, "r");
+  CheckDirection(x, y, x + 1, y - 1, player, nplayer, "ur");
+  CheckDirection(x, y, x, y - 1, player, nplayer, "u");
+  CheckDirection(x, y, x - 1, y - 1, player, nplayer, "ul");
+  CheckDirection(x, y, x - 1, y, player, nplayer, "l");
+  CheckDirection(x, y, x - 1, y + 1, player, nplayer, "dl");
+  CheckDirection(x, y, x, y + 1, player, nplayer, "d");
+  CheckDirection(x, y, x + 1, y + 1, player, nplayer, "dr");
+}
+    
+void Board::flip(int x1, int y1, int x2, int y2, char player){
   int xlow, xhigh, ylow, yhigh;
   if(x1 <= x2){
     xlow = x1;
@@ -64,7 +84,7 @@ void Board::flip(int x1, int y1, int x2, int y2){
     xhigh = x1;
     xlow = x2;
   }
-  if(y1 <= y2){
+  if(y1 >= y2){
     ylow = y1;
     yhigh = y2;
   }
@@ -75,45 +95,43 @@ void Board::flip(int x1, int y1, int x2, int y2){
   //if horisontal 
   if(y1 == y2){
     for(;xlow <= xhigh; ++xlow){
-      flip(xlow, ylow);
+      board_[xlow][ylow] = player;
     }
   }
   //if vertical
   else if(x1 == x2){
-    for(;ylow <= yhigh; ++ylow){
-      flip(xlow, ylow);
+    for(;ylow >= yhigh; --ylow){
+      board_[xlow][ylow] = player;
     }
   }
   //if up and right diagonal
-  else if(x1 < x2 && y1 < y2){
-    while(xlow <= xhigh){
-      flip(xlow, ylow);
-      ++xlow; ++ylow;
-    }
-  }
-  //if down and right diagonal
   else if(x1 < x2 && y1 > y2){
-    while(xlow < xhigh){
-      flip(xlow, yhigh);
+    while(xlow <= xhigh){
+      board_[xlow][ylow] = player;
       ++xlow; --ylow;
     }
   }
+  //if down and right diagonal
+  else if(x1 < x2 && y1 < y2){
+    while(xlow < xhigh){
+      board_[xlow][yhigh] = player;
+      ++xlow; ++yhigh;
+    }
+  }
   //if up and left diagonal
-  else if(x1 > x2 && y1 < y2){
+  else if(x1 > x2 && y1 > y2){
     while(xhigh > xlow){
-      flip(xhigh, ylow);
-      --xhigh; ++ylow;
+      board_[xhigh][ylow] = player;
+      --xhigh; --ylow;
     }
   }
   //if down and left diagonal
-  else if(x1 > x2 && y1 > y2){
+  else if(x1 > x2 && y1 < y2){
     while(xhigh > xlow){
-      flip(xhigh, yhigh);
-      --xhigh; --yhigh;
+      board_[xhigh][y1] = player;
+      --xhigh; ++y1;
     }
   }
-  flip(x2, y2);
-  flip(x1, y1);
 }
 
 void Board::flip(int x, int y){
@@ -125,9 +143,15 @@ void Board::flip(int x, int y){
 
 void Board::OutputBoard(){
   for(int y = 0; y < 8; ++y){
+    cout<<y<<' ';
     for(int x = 0; x < 8; ++x){
       cout<<board_[x][y]<<' ';
     }
     cout<<endl;
   }
+  cout<<"  ";
+  for(int x = 0; x < 8; ++x){
+    cout<<x<<' ';
+  }
+  cout<<endl;
 }

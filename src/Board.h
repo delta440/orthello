@@ -17,7 +17,7 @@ class Board{
   char operator() (int x, int y) const;
 
   //returns a list of valid move coordinates for either the first or second player
-  vector<vector<char> > getMoves(char player);
+  vector<int> getMoves(char player);
 
   //executes a move on a given xy coordinate by a given player
   void Move(int x, int y, char player);
@@ -30,8 +30,11 @@ class Board{
   //helper function for move to check for pieces which need to be flipped
   void CheckDirection(int x, int y, int xt, int yt, char player, char nplayer, string di);
 
+  //helper function for getMoves to check for valid moves
+  bool CheckDirectionb(int x, int y, int xt, int yt, char player, char nplayer, string di);
+
   //flips (exclusivly) all of the pieces between the two coordinates
-  void flip(int x1, int y1, int x2, int y2);
+  void flip(int x1, int y1, int x2, int y2, char player);
 
   //flips a single piece
   void flip(int x, int y);
