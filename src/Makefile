@@ -16,4 +16,4 @@ clean:
 	rm -f *~ *% *# .#*
 
 clean-all : clean
-	rm -f encrypter
+	rm -f ai

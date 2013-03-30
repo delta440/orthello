@@ -3,7 +3,7 @@
 
 class MinMaxSearch{
 public:	
-
+  MinMaxSearch();
 
 
 
