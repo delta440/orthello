@@ -8,36 +8,43 @@ using std::vector;
 //class used to store and modify what is currently on the board, note: I used char's to
 //represent what is on a square to save space
 class Board{
- public:
-  //constructs a board with the default orthello starting position
-  Board();
+  public:
+   //constructs a board with the default orthello starting position
+   Board();
 
-  //returns the contents of a square on the board e is empty 
-  //w is white b is black
-  char operator() (int x, int y) const;
+   //returns the contents of a square on the board e is empty 
+   //w is white b is black
+   char operator() (int x, int y) const;
 
-  //returns a list of valid move coordinates for either the first or second player
-  vector<int> getMoves(char player);
+   //returns a list of valid move coordinates for either the first or second player
+   vector<int> getMoves(char player) const;
 
-  //executes a move on a given xy coordinate by a given player
-  void Move(int x, int y, char player);
+   //executes a move on a given xy coordinate by a given player
+   void Move(int x, int y, char player);
 
-  //for testing only
-  void OutputBoard();
- private:
-  vector<vector<char> > board_;
+   //for testing only
+   void OutputBoard() const;
 
-  //helper function for move to check for pieces which need to be flipped
-  void CheckDirection(int x, int y, int xt, int yt, char player, char nplayer, string di);
+   //for testing only
+   void OutputBoard();
 
-  //helper function for getMoves to check for valid moves
-  bool CheckDirectionb(int x, int y, int xt, int yt, char player, char nplayer, string di);
+   char& GetPos(int x, int y);
+   
+   bool EndGame();
+  private:
+   vector<vector<char> > board_;
 
-  //flips (exclusivly) all of the pieces between the two coordinates
-  void flip(int x1, int y1, int x2, int y2, char player);
+   //helper function for move to check for pieces which need to be flipped
+   void CheckDirection(int x, int y, int xt, int yt, char player, char nplayer, string di);
 
-  //flips a single piece
-  void flip(int x, int y);
+   //helper function for getMoves to check for valid moves
+   bool CheckDirectionb(int x, int y, int xt, int yt, char player, char nplayer, string di)const;
+
+   //flips (exclusivly) all of the pieces between the two coordinates
+   void flip(int x1, int y1, int x2, int y2, char player);
+
+   //flips a single piece
+   void flip(int x, int y);
 };
 
 #endif //BOARD_H

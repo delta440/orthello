@@ -1,29 +1,79 @@
 #include "Board.h"
-
+#include "MinMaxSearch.h"
 
 #include <iostream>
 #include <vector>
 #include <utility>
-using std::vector;
-using std::cin;
-using std::cout;
-using std::endl;
+
+using namespace std;
+
+void oppmove(Board &B, char opp){
+   int x, y;
+   cout<<"Please enter opponent's move (x y): ";
+   cin>>x>>y;
+   B.Move(x, y, opp);
+}
 int main(){
-  Board x;
-  vector<int> Moves;
-  char player = 'w';
-  while(1){
-    player == 'w' ? player='b' : player='w';
-    int mx, my;
-    x.OutputBoard();  
-    Moves = x.getMoves(player);
-    for(vector<int>::size_type i = 0; i < Moves.size(); ++i){
-      cout<<Moves[i];
-      if((i+1)%2 == 0) {cout<<endl;}
-    }
-    cin>>mx;
-    cin>>my;
-    x.Move(mx, my,player);
-  }
-  return 0;
+   const int MAXDEPTH = 10;
+   MinMaxSearch Searcher;
+   Board x;
+   vector<int> Moves;
+   char ai;
+   char opponent;
+   pair<int, int> xy;
+   cout<<"Please Enter Local AI color(w or b): ";
+   cin>>ai;
+   ai == 'w' ? opponent = 'b' : opponent = 'w';
+   x.OutputBoard();
+   vector<int> pmoves;
+   while(!x.EndGame()){
+      if(ai == 'w'){
+	 xy = Searcher.AlphaBetaSearch(x, ai, MAXDEPTH);
+	 cout<<xy.first<<xy.second<<endl;
+	 pmoves = x.getMoves('w');
+	 cout<<endl;
+	 for(int i = 0; i < pmoves.size(); ++i){
+	    if((i+1)%2 == 1){cout<<endl;}
+	    cout<<pmoves[i];
+	 }
+	 cout<<endl;
+	 if(xy.first != -1 && xy.second !=-1)
+	    x.Move(xy.first, xy.second, ai);
+	 x.OutputBoard();
+	 pmoves = x.getMoves('b');
+	 cout<<endl;
+	 for(int i = 0; i < pmoves.size(); ++i){
+	    if((i+1)%2 == 1){cout<<endl;}
+	    cout<<pmoves[i];
+	 }
+	 cout<<endl;
+	 oppmove(x, opponent);
+      }
+      else{
+	 oppmove(x, opponent);
+	 x.OutputBoard();
+	 xy = Searcher.AlphaBetaSearch(x, ai, MAXDEPTH);
+	 cout<<xy.first<<xy.second<<endl;
+	 
+	 if(xy.first != -1 && xy.second !=-1)
+	    x.Move(xy.first, xy.second, ai);
+      }
+      x.OutputBoard();	
+   }
+   int nb = 0, nw = 0;
+   for(int i = 0; i < 8; i++)
+   {
+      for(int j = 0; j < 8; j++)
+      {
+	 char cur = x(i, j);
+	 if(cur == 'b')
+	    nb++;
+	 else if(cur == 'w')
+	    nw++;
+      }
+   }
+   nb > nw ? cout<<"black wins"<<endl :
+      (nb > nw ? cout<<"white wins"<<endl  : cout<<"Tie"<<endl);
+   
+   return 0;
 }
