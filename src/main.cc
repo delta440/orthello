@@ -27,34 +27,23 @@ int main(){
    x.OutputBoard();
    vector<int> pmoves;
    while(!x.EndGame()){
-      if(ai == 'w'){
+      if(ai == 'b'){
 	 xy = Searcher.AlphaBetaSearch(x, ai, MAXDEPTH);
 	 cout<<xy.first<<xy.second<<endl;
-	 pmoves = x.getMoves('w');
-	 cout<<endl;
-	 for(int i = 0; i < pmoves.size(); ++i){
-	    if((i+1)%2 == 1){cout<<endl;}
-	    cout<<pmoves[i];
-	 }
-	 cout<<endl;
 	 if(xy.first != -1 && xy.second !=-1)
 	    x.Move(xy.first, xy.second, ai);
 	 x.OutputBoard();
-	 pmoves = x.getMoves('b');
-	 cout<<endl;
-	 for(int i = 0; i < pmoves.size(); ++i){
-	    if((i+1)%2 == 1){cout<<endl;}
-	    cout<<pmoves[i];
-	 }
-	 cout<<endl;
-	 oppmove(x, opponent);
+	 pmoves = x.getMoves(opponent);
+	 if(pmoves.size() !=0)
+	    oppmove(x, opponent);
       }
       else{
-	 oppmove(x, opponent);
+	 pmoves = x.getMoves(opponent);
+	 if(pmoves.size() != 0)
+	    oppmove(x, opponent);
 	 x.OutputBoard();
 	 xy = Searcher.AlphaBetaSearch(x, ai, MAXDEPTH);
 	 cout<<xy.first<<xy.second<<endl;
-	 
 	 if(xy.first != -1 && xy.second !=-1)
 	    x.Move(xy.first, xy.second, ai);
       }
@@ -73,7 +62,7 @@ int main(){
       }
    }
    nb > nw ? cout<<"black wins"<<endl :
-      (nb > nw ? cout<<"white wins"<<endl  : cout<<"Tie"<<endl);
+      (nb < nw ? cout<<"white wins"<<endl  : cout<<"Tie"<<endl);
    
    return 0;
 }

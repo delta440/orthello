@@ -27,7 +27,7 @@ pair<int, int> MinMaxSearch::AlphaBetaSearch(const Board &B, const char &p, cons
 int MinMaxSearch::GetVal(const Board &B, const int &M, const char &p)
 {
    //weights for each feature
-   const int w1 = 5, w2 = 1, w3 = 9;
+   const int w1 = 5, w2 = 1, w3 = 10;
    int D = 0, W = 0, nb = 0, nw = 0;
    for(int i = 0; i < 8; i++)
    {
