@@ -16,37 +16,40 @@ const int NodeVal_ [8][8] = {{9,5,5,5,5,5,5,9},
 			     {9,5,5,5,5,5,5,9}};
 
 class MinMaxSearch{
-  public:
+ public:
    
-   /*Performs Minimax search and returns the x, y coordinates for the move
-     stored in a pair of ints*/
-   pair<int, int> MinMaxRunSearch(const Board &B, const char &p, const int &depth);
-   
-   //Performs AlphaBeta search
-   pair<int, int> AlphaBetaSearch(const Board &B, const char &p, const int &depth);
+ MinMaxSearch(char AiColor, char NAiColor):AiColor_(AiColor), NAiColor_(NAiColor){}
 
-  private:
+  /*Performs Minimax search and returns the x, y coordinates for the move
+    stored in a pair of ints*/
+  pair<int, int> MinMaxRunSearch(const Board &B, const int &depth);
    
-   //Returns the utility value of the current state
-   int GetVal(const Board &B, const int &M, const char &p);
+  //Performs AlphaBeta search
+  pair<int, int> AlphaBetaSearch(const Board &B, const int &depth);
+
+ private:
+   
+  //Returns the utility value of the current state
+  int GetVal(const Board &B, const int &M, const char &p);
   
-   //Helper function for MinMaxSearch for the max player
-   int MaxValue(const Board &B, const char &p, const int &d, const int &ter,
-		pair<int, int> &xy);
+  //Helper function for MinMaxSearch for the max player
+  int MaxValue(const Board &B, const int &d, const int &ter,
+	       pair<int, int> &xy);
   
-   //Helper function for MinMaxSearch for the min player
-   int MinValue(const Board &B, const char &p, const int &d, const int &ter,
-		pair<int, int> &xy);
+  //Helper function for MinMaxSearch for the min player
+  int MinValue(const Board &B, const int &d, const int &ter,
+	       pair<int, int> &xy);
   
-   //Helper function for AlphaBetaSearch for the max player
-   int ABMaxValue(const Board &B, const char &p, int &a, int &b, const int &d, 
-                  const int &ter, pair<int, int> &xy);
+  //Helper function for AlphaBetaSearch for the max player
+  int ABMaxValue(const Board &B, int &a, int &b, const int &d, 
+		 const int &ter, pair<int, int> &xy);
   
-   //Helper function for AlphaBetaSearch for the min player
-   int ABMinValue(const Board &B, const char &p, int &a, int &b, const int &d, 
-                  const int &ter, pair<int, int> &xy);
+  //Helper function for AlphaBetaSearch for the min player
+  int ABMinValue(const Board &B, int &a, int &b, const int &d, 
+		 const int &ter, pair<int, int> &xy);
   
-  
+  const char AiColor_;
+  const char NAiColor_;
 };
 
 

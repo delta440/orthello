@@ -1,5 +1,5 @@
 CC = g++
-CFlags = -Wall
+CFlags = -Wall -O3
 Proj = ai
 
 $(Proj): main.o MinMaxSearch.o Board.o
