@@ -19,9 +19,9 @@ int main(){
   vector<int> Moves;
   char ai, first_player, opponent;
   pair<int, int> xy;
-  cout<<"Please Enter Local AI color(w or b): ";
+  cout<<"Please enter local AI color(w or b): ";
   cin>>ai;
-  cout<<"Please Enter Which Player Goes FIrst (w or b): ";
+  cout<<"Please enter which player goes first (w or b): ";
   cin>>first_player;
   ai == 'w' ? opponent = 'b' : opponent = 'w';
   MinMaxSearch Searcher(ai, opponent);
