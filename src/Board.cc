@@ -182,7 +182,7 @@ void Board::OutputBoard(){
    cout<<endl;
 }
 
-bool Board::EndGame(){
+bool Board::EndGame() const{
    if(getMoves('w').size() == 0 && getMoves('b').size() == 0){
       return true;
    }

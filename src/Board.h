@@ -30,7 +30,7 @@ class Board{
 
    char& GetPos(int x, int y);
    
-   bool EndGame();
+   bool EndGame() const;
   private:
    vector<vector<char> > board_;
 
