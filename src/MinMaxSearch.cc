@@ -187,7 +187,7 @@ int MinMaxSearch::ABMinValue(const Board &B, int &a, int &b,
       }
       if(v <= a)
 	return v;
-      a = min(b, v);
+      b = min(b, v);
     }
   if(d == 0){
     xy.first = moves[k*2];
