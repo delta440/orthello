@@ -18,8 +18,8 @@ pair<int, int> MinMaxSearch::MinMaxRunSearch(const Board &B, const int &depth){
 pair<int, int> MinMaxSearch::AlphaBetaSearch(const Board &B, const int &depth){
   pair<int, int> xy;
   xy.first = -1; xy.second = -1;
-  int a = -1000000;
-  int b = 1000000;
+  int a = -10000000;
+  int b = 10000000;
   ABMaxValue(B, a, b, 0, depth, xy);
   return xy;
 }
@@ -27,6 +27,7 @@ pair<int, int> MinMaxSearch::AlphaBetaSearch(const Board &B, const int &depth){
 int MinMaxSearch::GetVal(const Board &B, const int &M, const char&p)
 {
   //weights for each feature
+  if(p == AiColor_){
   const double w1 = 5, w2 = 1, w3 = 10;
   int D = 0, W = 0;
   for(int i = 0; i < 8; i++){
@@ -38,16 +39,37 @@ int MinMaxSearch::GetVal(const Board &B, const int &M, const char&p)
 	  }
 	  else if(cur != 'e' && cur != p){
 	    D--;
-	    //W -= NodeVal_[i][j];
+	    W -= NodeVal_[i][j];
 	  }
 	}
   }
   if(D < 0){
-    D *= 2;
+    //D *= 2;
     if(B.EndGame())
-      D = -1000000;
+      D = -100000;
   }
   return w1*D + w2*M + w3*W;
+  }
+  else{
+const double w1 = 5, w2 = 1, w3 = 10;
+  int D = 0, W = 0;
+  for(int i = 0; i < 8; i++){
+	for(int j = 0; j < 8; j++){
+	  char cur = B(i, j);
+	  if(cur == p){
+	    D--;
+	    W -= NodeVal_[i][j];
+	  }
+	  else if(cur != 'e' && cur != p){
+	    D++;
+	    W += NodeVal_[i][j];
+	  }
+	}
+  }
+  
+
+  return w1*D + w2*M + w3*W;
+  }
 }
 
 int MinMaxSearch::MaxValue(const Board &B, const int &d, const int &ter,
@@ -56,7 +78,7 @@ int MinMaxSearch::MaxValue(const Board &B, const int &d, const int &ter,
   vector<int> moves = B.getMoves(AiColor_);  //p is either 'b' or 'w'
   if(d == ter || moves.size() == 0)
     return GetVal(B, (moves.size()/2), AiColor_);
-  int v = -1000000;
+  int v = -10000000;
   vector<Board> states;
   for(unsigned int i = 0; i < moves.size(); i += 2)
     {
@@ -91,7 +113,7 @@ int MinMaxSearch::MinValue(const Board &B, const int &d, const int &ter,
   vector<int> moves = B.getMoves(AiColor_);
   if(d >= ter || moves.size() == 0)
     return GetVal(B, (moves.size()/2), NAiColor_);
-  int v = 1000000;
+  int v = 10000000;
   vector<Board> states;
   for(unsigned int i = 0; i < moves.size(); i += 2)
     {
@@ -126,7 +148,7 @@ int MinMaxSearch::ABMaxValue(const Board &B, int &a, int &b,
   vector<int> moves = B.getMoves(AiColor_);
   if(d == ter || moves.size() == 0)
     return GetVal(B, (moves.size()/2), AiColor_);
-  int v = -1000000;
+  int v = -10000000;
   vector<Board> states;
   for(unsigned int i = 0; i < moves.size(); i += 2)
     {
@@ -163,7 +185,7 @@ int MinMaxSearch::ABMinValue(const Board &B, int &a, int &b,
   vector<int> moves = B.getMoves(NAiColor_);  //p is either 'b' or 'w'
   if(d == ter || moves.size() == 0)
     return GetVal(B, (moves.size()/2), NAiColor_);
-  int v = 1000000;
+  int v = 10000000;
   vector<Board> states;
   for(unsigned int i = 0; i < moves.size(); i += 2)
     {
