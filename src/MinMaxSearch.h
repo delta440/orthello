@@ -6,14 +6,14 @@
 
 using namespace std;
 
-const int NodeVal_ [8][8] = {{9,5,5,5,5,5,5,9},
-			     {5,1,1,1,1,1,1,5},
-			     {5,1,1,1,1,1,1,5},
-			     {5,1,1,2,2,1,1,5},
-			     {5,1,1,2,2,1,1,5},
-			     {5,1,1,1,1,1,1,5},
-			     {5,1,1,1,1,1,1,5},
-			     {9,5,5,5,5,5,5,9}};
+const int NodeVal_ [8][8] = {{20,-15,5,-2,-2,5,-15,20},
+							 {-15 ,-15,0,0,0,0,-15,-15 },
+							 {5 ,0,1,1,1,1,0,5 },
+							 {-2 ,0,1,0,0,1,0,-2 },
+							 {-2 ,0,1,0,0,1,0,-2 },
+							 {5 ,0,1,1,1,1,0,5 },
+							 {-15 ,-15,0,0,0,0,-15,-15 },
+							 {20,-15,5,-2,-2,5,-15,20}};
 
 class MinMaxSearch{
  public:
@@ -34,19 +34,19 @@ class MinMaxSearch{
   
   //Helper function for MinMaxSearch for the max player
   int MaxValue(const Board &B, const int &d, const int &ter,
-	       pair<int, int> &xy);
+			   pair<int, int> &xy);
   
   //Helper function for MinMaxSearch for the min player
   int MinValue(const Board &B, const int &d, const int &ter,
-	       pair<int, int> &xy);
+			   pair<int, int> &xy);
   
   //Helper function for AlphaBetaSearch for the max player
   int ABMaxValue(const Board &B, int &a, int &b, const int &d, 
-		 const int &ter, pair<int, int> &xy);
+				 const int &ter, pair<int, int> &xy);
   
   //Helper function for AlphaBetaSearch for the min player
   int ABMinValue(const Board &B, int &a, int &b, const int &d, 
-		 const int &ter, pair<int, int> &xy);
+				 const int &ter, pair<int, int> &xy);
   
   const char AiColor_;
   const char NAiColor_;

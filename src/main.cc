@@ -14,7 +14,7 @@ void oppmove(Board &B, char opp){
   B.Move(x, y, opp);
 }
 int main(){
-  const int MAXDEPTH = 11;
+  const int MAXDEPTH = 7;
   Board x;
   vector<int> Moves;
   char ai, first_player, opponent;
