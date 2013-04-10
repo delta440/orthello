@@ -47,7 +47,6 @@ int MinMaxSearch::GetVal(const Board &B, const int &M, const char&p)
     if(B.EndGame())
       D = -1000000;
   }
-  cout<<w1*D<<' '<<w2*M<<' '<<w3*W<<endl;
   return w1*D + w2*M + w3*W;
 }
 
